@@ -64,15 +64,31 @@
     submitBtn.disabled = true;
     submitBtn.querySelector(".btn__label").textContent = "Sending...";
 
-    // TODO: wire this up to a real endpoint (e.g. Formspree) before launch —
-    // see README.md. For now the form only validates and shows success locally.
-    setTimeout(function () {
-      form.hidden = true;
-      successBox.hidden = false;
-      successBox.scrollIntoView({ behavior: "smooth", block: "center" });
-      submitBtn.disabled = false;
-      submitBtn.querySelector(".btn__label").textContent = "Send request";
-    }, 400);
+    // Netlify Forms: submit as a normal URL-encoded POST to "/" so its
+    // form-handling bot (which watched for this form at deploy time,
+    // matched by the hidden form-name field) picks it up — same request
+    // shape a plain HTML form submit would send, just done via fetch so we
+    // can keep this custom success/error UI instead of a page reload.
+    var body = new URLSearchParams(new FormData(form)).toString();
+
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: body
+    })
+      .then(function (response) {
+        if (!response.ok) throw new Error("Request failed");
+        form.hidden = true;
+        successBox.hidden = false;
+        successBox.scrollIntoView({ behavior: "smooth", block: "center" });
+      })
+      .catch(function () {
+        showError("Something went wrong sending your request. Please try again or call us at +30 22420 12345.");
+      })
+      .finally(function () {
+        submitBtn.disabled = false;
+        submitBtn.querySelector(".btn__label").textContent = "Send request";
+      });
   });
 })();
 

@@ -344,9 +344,9 @@
         </div>
 
         <div class="booking__form-wrap">
-      <form id="booking-form" class="form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
-        <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <input type="hidden" name="_subject" value="New booking request — Meltemi Rentals">
+      <form id="booking-form" class="form" name="booking" method="POST" action="/" data-netlify="true" data-netlify-honeypot="bot-field" novalidate>
+        <input type="hidden" name="form-name" value="booking">
+        <input type="text" name="bot-field" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
 
         <div class="form__row">
           <label for="fullname">Full name</label>
