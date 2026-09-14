@@ -34,7 +34,7 @@
         Cars from €35/day — with full insurance and airport delivery included, and no deposit required.
       </p>
       <div class="hero__cta">
-        <a href="#booking" class="btn btn--accent btn--large">Book your car</a>
+        <a href="#booking" class="btn btn--accent btn--large">Check availability</a>
         <a href="#why-meltemi" class="btn btn--ghost btn--large">Why Meltemi ?</a>
       </div>
       <ul class="hero__trust" aria-label="Key service features">
@@ -58,21 +58,18 @@
         <div class="compare__card compare__card--typical">
           <span class="compare__tag">LOWER ADVERTISED PRICE</span>
           <div class="compare__price">
-            <span style="font-size: 2rem; font-weight: 800;">Lower</span>
-            <span style="font-size: 1.15rem; font-weight: 700; margin-left: 0.2rem; white-space: nowrap;">
-              price
-            </span>
-            <p class="compare__list--minus">The starting price isn’t always the final price.</p>
+            <span class="compare__amount">€15</span><span class="compare__unit">/day</span>
+            <p compare__total>The starting price isn’t always the final price.</p>
           </div>
           <ul class="compare__list compare__list--minus">
-            <li>+ Insurance may be added </li>
+            <li>+ Insurance +15€ </li>
             <li>+ Card deposit may be required</li>
-            <li>+ Airport delivery may cost extra </li>
+            <li>+ Airport delivery +10€ </li>
             <li>+ Fuel policy may affect the final cost</li>
           </ul>
           <div class="compare__total">
-            <span>Ffinal cost</span>
-            <strong>~€48/day</strong>
+            <span>Final cost</span>
+            <strong>~€40/day</strong>
           </div>
           <p class="compare__fineprint">Illustrative example based on common market add-ons.</p>
         </div>
@@ -110,11 +107,7 @@
 
             <div class="carousel__slide">
               <div class="carousel__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20 13V7a2 2 0 00-2-2h-6L4 13l8 8 8-8z"/>
-                  <circle cx="14.5" cy="9.5" r="1.5"/>
-                </svg>
+                <i data-lucide="tag"></i>
               </div>
               <p class="carousel__question">Is the price really final?</p>
               <p class="carousel__answer">
@@ -124,11 +117,7 @@
 
             <div class="carousel__slide">
               <div class="carousel__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="22" y1="2" x2="11" y2="13"/>
-                  <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-                </svg>
+                <i data-lucide="plane"></i>
               </div>
               <p class="carousel__question">Is airport pickup/drop-off included?</p>
               <p class="carousel__answer">
@@ -138,10 +127,7 @@
 
             <div class="carousel__slide">
               <div class="carousel__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/>
-                </svg>
+                <i data-lucide="phone"></i>
               </div>
               <p class="carousel__question">Will I have support during my rental?</p>
               <p class="carousel__answer">
@@ -151,11 +137,7 @@
 
             <div class="carousel__slide">
               <div class="carousel__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z"/>
-                  <path d="M9 12l2 2 4-4"/>
-                </svg>
+                <i data-lucide="shield-check"></i>
               </div>
               <p class="carousel__question">Is insurance included?</p>
               <p class="carousel__answer">
@@ -198,12 +180,12 @@
               <span class="car-card__badge">Economy</span>
               <h3>Fiat Panda <span>or similar</span></h3>
               <ul class="car-card__specs">
-                <li><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-4 3-6.5 7-6.5s7 2.5 7 6.5"/></svg>4 seats</li>
-                <li><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v10"/><circle cx="12" cy="3" r="2"/><path d="M5 21h14"/><path d="M8 21c0-5 1.8-8 4-8s4 3 4 8"/></svg>Manual</li>
-                <li><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M4.2 6.5l15.6 11M4.2 17.5l15.6-11"/></svg>A/C</li>
+                <li><i class="spec-icon" data-lucide="users" aria-hidden="true"></i>4 seats</li>
+                <li><i class="spec-icon" data-lucide="settings" aria-hidden="true"></i>Manual</li>
+                <li><i class="spec-icon" data-lucide="snowflake" aria-hidden="true"></i>A/C</li>
               </ul>
               <div class="car-card__price"><strong>€35</strong> / day</div>
-              <a href="#booking" class="btn btn--outline" data-category="Economy — Fiat Panda">Book</a>
+              <a href="#booking" class="btn btn--outline" data-category="Economy — Fiat Panda">Check availability</a>
             </article>
           </div>
 
@@ -215,12 +197,12 @@
               <span class="car-card__badge">Compact</span>
               <h3>Hyundai i20 <span>or similar</span></h3>
               <ul class="car-card__specs">
-                <li><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-4 3-6.5 7-6.5s7 2.5 7 6.5"/></svg>5 seats</li>
-                <li><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v10"/><circle cx="12" cy="3" r="2"/><path d="M5 21h14"/><path d="M8 21c0-5 1.8-8 4-8s4 3 4 8"/></svg>Manual</li>
-                <li><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M4.2 6.5l15.6 11M4.2 17.5l15.6-11"/></svg>A/C</li>
+                <li><i class="spec-icon" data-lucide="users" aria-hidden="true"></i>5 seats</li>
+                <li><i class="spec-icon" data-lucide="settings" aria-hidden="true"></i>Manual</li>
+                <li><i class="spec-icon" data-lucide="snowflake" aria-hidden="true"></i>A/C</li>
               </ul>
               <div class="car-card__price"><strong>€42</strong> / day</div>
-              <a href="#booking" class="btn btn--outline" data-category="Compact — Hyundai i20">Book</a>
+              <a href="#booking" class="btn btn--outline" data-category="Compact — Hyundai i20">Check availability</a>
             </article>
           </div>
 
@@ -232,12 +214,12 @@
               <span class="car-card__badge">SUV / Family</span>
               <h3>Suzuki Vitara <span>or similar</span></h3>
               <ul class="car-card__specs">
-                <li><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-4 3-6.5 7-6.5s7 2.5 7 6.5"/></svg>5 seats</li>
-                <li><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v10"/><circle cx="12" cy="3" r="2"/><path d="M5 21h14"/><path d="M8 21c0-5 1.8-8 4-8s4 3 4 8"/></svg>Automatic</li>
-                <li><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M4.2 6.5l15.6 11M4.2 17.5l15.6-11"/></svg>A/C</li>
+                <li><i class="spec-icon" data-lucide="users" aria-hidden="true"></i>5 seats</li>
+                <li><i class="spec-icon" data-lucide="settings" aria-hidden="true"></i>Automatic</li>
+                <li><i class="spec-icon" data-lucide="snowflake" aria-hidden="true"></i>A/C</li>
               </ul>
               <div class="car-card__price"><strong>€55</strong> / day</div>
-              <a href="#booking" class="btn btn--outline" data-category="SUV — Suzuki Vitara">Book</a>
+              <a href="#booking" class="btn btn--outline" data-category="SUV — Suzuki Vitara">Check availability</a>
             </article>
           </div>
 
@@ -249,12 +231,12 @@
               <span class="car-card__badge">Cabrio</span>
               <h3>Fiat 500 Cabrio <span>or similar</span></h3>
               <ul class="car-card__specs">
-                <li><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-4 3-6.5 7-6.5s7 2.5 7 6.5"/></svg>4 seats</li>
-                <li><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v10"/><circle cx="12" cy="3" r="2"/><path d="M5 21h14"/><path d="M8 21c0-5 1.8-8 4-8s4 3 4 8"/></svg>Manual</li>
-                <li><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M4.2 6.5l15.6 11M4.2 17.5l15.6-11"/></svg>A/C</li>
+                <li><i class="spec-icon" data-lucide="users" aria-hidden="true"></i>4 seats</li>
+                <li><i class="spec-icon" data-lucide="settings" aria-hidden="true"></i>Manual</li>
+                <li><i class="spec-icon" data-lucide="snowflake" aria-hidden="true"></i>A/C</li>
               </ul>
               <div class="car-card__price"><strong>€60</strong> / day</div>
-              <a href="#booking" class="btn btn--outline" data-category="Cabrio — Fiat 500 Cabrio">Book</a>
+              <a href="#booking" class="btn btn--outline" data-category="Cabrio — Fiat 500 Cabrio">Check availability</a>
             </article>
           </div>
 
@@ -439,6 +421,7 @@
   </div>
 </footer>
 
+<script src="https://unpkg.com/lucide@1.46.0/dist/umd/lucide.js"></script>
 <script src="js/script.js"></script>
 </body>
 </html>

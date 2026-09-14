@@ -9,6 +9,7 @@
   --accent:#E8734A;
   --accent-deep:#D45F38;
   --ok:#2E7D4F;
+  --danger:#C0392B;
   --border:#E4DCD0;
   --radius:14px;
   --shadow:0 8px 24px rgba(27,43,46,.08);
@@ -16,7 +17,11 @@
 }
 
 *,*::before,*::after{box-sizing:border-box;}
-html{-webkit-text-size-adjust:100%;}
+html{
+  -webkit-text-size-adjust:100%;
+  scroll-behavior:smooth;
+  scroll-padding-top:76px;
+}
 body{
   margin:0;
   font-family:var(--font);
@@ -210,7 +215,7 @@ section h2{
   border-top:1px solid var(--border);
   font-size:.95rem;
 }
-.compare__total strong{font-size:1.3rem;}
+.compare__total strong{font-size:1.75rem;}
 .compare__total--final strong{color:var(--teal-deep);}
 .compare__fineprint{
   font-size:.78rem;
@@ -290,15 +295,17 @@ section h2{
   margin-top:16px;
 }
 .carousel__btn{
-  width:34px;height:34px;
+  width:40px;height:40px;
   border-radius:50%;
   background:#fff;
   border:1px solid var(--border);
   color:var(--teal-deep);
-  display:none;
+  display:flex;
+  flex:none;
   align-items:center;justify-content:center;
   cursor:pointer;
   padding:0;
+  box-shadow:var(--shadow);
 }
 .carousel__btn:hover{background:var(--sand-deep);}
 .carousel__dots{display:flex;align-items:center;gap:6px;}
@@ -548,7 +555,6 @@ section h2{
   .carousel__slide{flex-basis:calc((100% - 28px) / 3);}
   .carousel--fleet .carousel__slide{flex-basis:calc((100% - 40px) / 3);}
   .carousel--reviews .carousel__slide{flex-basis:calc((100% - 44px) / 3);}
-  .carousel__btn{display:flex;}
 }
 
 @media (min-width:900px){

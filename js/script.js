@@ -1,3 +1,10 @@
+// Replaces every <i data-lucide="..."> placeholder with its inline SVG.
+// Must run before the carousels below capture/clone their slide content,
+// so clones duplicate the real rendered icon, not the placeholder tag.
+if (window.lucide) {
+  lucide.createIcons();
+}
+
 (function () {
   "use strict";
 
@@ -92,9 +99,15 @@
   });
 })();
 
-// Loops infinitely — past the last card wraps to the first (and vice versa)
-// — for swipe, drag, dots, and the prev/next buttons alike. Used for both
-// the checklist and fleet carousels.
+// True circular carousel: every arrow click or dot shifts the window by
+// exactly one real slide, in either direction, forever — [1,2,3] -> [2,3,4]
+// -> [3,4,1] -> ... The loop-back is invisible because the track is padded
+// with clones (as many as fit in one view) at both ends, so the moment the
+// visible window drifts fully into clone territory we jump it by `count`
+// slides with an instant (non-animated) scroll — landing on pixel-identical
+// content, so nothing appears to move. Items-per-view is measured live from
+// layout so this adapts from 1-up mobile to multi-up desktop, and rebuilds
+// on resize. Used for the checklist, fleet, and reviews carousels.
 function initLoopCarousel(trackId, dotsId, prevId, nextId) {
   "use strict";
 
@@ -105,44 +118,32 @@ function initLoopCarousel(trackId, dotsId, prevId, nextId) {
   var prevBtn = document.getElementById(prevId);
   var nextBtn = document.getElementById(nextId);
 
+  // Captured once, before any clones exist — this is the real content and
+  // never changes across rebuilds.
   var realSlides = Array.prototype.slice.call(track.children);
   var count = realSlides.length;
 
-  // Clone the first/last real slides to the opposite ends so scrolling past
-  // an edge lands on a visual duplicate, which we then swap for the real
-  // slide instantly (no animation) once the scroll settles — an invisible
-  // seam that makes the strip feel endless.
-  var firstClone = realSlides[0].cloneNode(true);
-  var lastClone = realSlides[count - 1].cloneNode(true);
-  firstClone.setAttribute("aria-hidden", "true");
-  lastClone.setAttribute("aria-hidden", "true");
-  track.appendChild(firstClone);
-  track.insertBefore(lastClone, track.firstChild);
+  var allSlides = [];
+  var dots = [];
+  var itemsPerView = 1;
+  var animating = false;
 
-  var allSlides = Array.prototype.slice.call(track.children); // [lastClone, ...real, firstClone]
+  function gap() {
+    return parseFloat(getComputedStyle(track).columnGap) || 0;
+  }
 
-  realSlides.forEach(function (_, i) {
-    var dot = document.createElement("button");
-    dot.type = "button";
-    dot.className = "carousel__dot";
-    dot.setAttribute("aria-label", "Go to slide " + (i + 1));
-    dot.addEventListener("click", function () {
-      goTo(i + 1, false);
-    });
-    dotsWrap.appendChild(dot);
-  });
-  var dots = Array.prototype.slice.call(dotsWrap.children);
-
-  // Distance in px between one slide's start and the next — used instead of
-  // scrollIntoView/getBoundingClientRect comparisons, which can fight the
-  // browser's own scroll-snap and end up not moving at all.
+  // Distance in px between one slide's start and the next.
   function step() {
-    var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-    return allSlides[1].getBoundingClientRect().width + gap;
+    return realSlides[0].getBoundingClientRect().width + gap();
+  }
+
+  function computeItemsPerView() {
+    return Math.max(1, Math.min(count, Math.round(track.clientWidth / step())));
   }
 
   function goTo(index, instant) {
     index = Math.max(0, Math.min(index, allSlides.length - 1));
+    if (!instant) animating = true;
     track.scrollTo({ left: Math.round(index * step()), behavior: instant ? "auto" : "smooth" });
   }
 
@@ -150,18 +151,94 @@ function initLoopCarousel(trackId, dotsId, prevId, nextId) {
     return Math.round(track.scrollLeft / step());
   }
 
+  // Which real slide (0..count-1) currently sits at the start of the
+  // visible window, wrapped into range.
+  function activePosition(idx) {
+    var pos = (idx - itemsPerView) % count;
+    if (pos < 0) pos += count;
+    return pos;
+  }
+
+  function updateDots(idx) {
+    var pos = activePosition(idx);
+    dots.forEach(function (dot, i) {
+      dot.setAttribute("aria-current", i === pos ? "true" : "false");
+    });
+  }
+
   function settle() {
     var idx = currentIndex();
-    if (idx <= 0) {
-      goTo(allSlides.length - 2, true); // landed on leading clone of last -> snap to real last
-      idx = allSlides.length - 2;
-    } else if (idx >= allSlides.length - 1) {
-      goTo(1, true); // landed on trailing clone of first -> snap to real first
-      idx = 1;
+    // Clones sit at both ends, `itemsPerView` deep, so once the window has
+    // drifted fully into clone territory, jump by exactly `count` to the
+    // equivalent real position — instant and, since it's a clone of that
+    // exact content, visually identical to what was already on screen.
+    if (idx < itemsPerView) {
+      goTo(idx + count, true);
+      idx += count;
+    } else if (idx >= itemsPerView + count) {
+      goTo(idx - count, true);
+      idx -= count;
     }
-    dots.forEach(function (dot, i) {
-      dot.setAttribute("aria-current", i === idx - 1 ? "true" : "false");
+    updateDots(idx);
+    animating = false;
+  }
+
+  // Ignored while a smooth scroll is already in flight, so rapid clicks
+  // can't fire a second animation on top of the first and desync the loop.
+  function step1(dir) {
+    if (animating) return;
+    goTo(currentIndex() + dir, false);
+  }
+
+  function goToPosition(pos) {
+    if (animating) return;
+    goTo(itemsPerView + pos, false);
+  }
+
+  function build() {
+    itemsPerView = computeItemsPerView();
+
+    // Rebuild the track as [clones of the tail][real slides][clones of the
+    // head], cloning exactly as many slides as are visible at once — that's
+    // what keeps the loop seamless at any items-per-view.
+    while (track.firstChild) track.removeChild(track.firstChild);
+
+    for (var i = 0; i < itemsPerView; i++) {
+      var tailClone = realSlides[count - itemsPerView + i].cloneNode(true);
+      tailClone.setAttribute("aria-hidden", "true");
+      track.appendChild(tailClone);
+    }
+    realSlides.forEach(function (slide) {
+      track.appendChild(slide);
     });
+    for (var j = 0; j < itemsPerView; j++) {
+      var headClone = realSlides[j].cloneNode(true);
+      headClone.setAttribute("aria-hidden", "true");
+      track.appendChild(headClone);
+    }
+
+    allSlides = Array.prototype.slice.call(track.children);
+
+    // One dot per real slide — every real slide is a reachable, distinct
+    // position in this circular model, so this is never off by one.
+    dotsWrap.innerHTML = "";
+    dots = [];
+    for (var p = 0; p < count; p++) {
+      (function (pos) {
+        var dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = "carousel__dot";
+        dot.setAttribute("aria-label", "Go to slide " + (pos + 1));
+        dot.addEventListener("click", function () {
+          goToPosition(pos);
+        });
+        dotsWrap.appendChild(dot);
+        dots.push(dot);
+      })(p);
+    }
+
+    goTo(itemsPerView, true); // land on the first real slide
+    settle();
   }
 
   var scrollTimeout;
@@ -172,12 +249,12 @@ function initLoopCarousel(trackId, dotsId, prevId, nextId) {
 
   if (prevBtn) {
     prevBtn.addEventListener("click", function () {
-      goTo(currentIndex() - 1, false);
+      step1(-1);
     });
   }
   if (nextBtn) {
     nextBtn.addEventListener("click", function () {
-      goTo(currentIndex() + 1, false);
+      step1(1);
     });
   }
 
@@ -210,8 +287,15 @@ function initLoopCarousel(trackId, dotsId, prevId, nextId) {
   track.addEventListener("pointerup", endDrag);
   track.addEventListener("pointercancel", endDrag);
 
-  goTo(1, true); // start on the first real slide, not the leading clone
-  settle();
+  build();
+
+  // Items-per-view changes between mobile and desktop breakpoints, so the
+  // page/clone/dot setup needs rebuilding whenever the viewport crosses one.
+  var resizeTimeout;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(build, 150);
+  });
 }
 
 initLoopCarousel("checklist-track", "checklist-dots", "checklist-prev", "checklist-next");
