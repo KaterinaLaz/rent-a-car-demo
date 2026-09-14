@@ -83,7 +83,7 @@
         successBox.scrollIntoView({ behavior: "smooth", block: "center" });
       })
       .catch(function () {
-        showError("Something went wrong sending your request. Please try again or call us at +30 22420 12345.");
+        showError("Something went wrong sending your request. Please try again or call us at +30 22420 00000.");
       })
       .finally(function () {
         submitBtn.disabled = false;
